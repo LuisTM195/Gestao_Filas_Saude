@@ -1,30 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from '../assets/Logo NO BG.png';
+import { useNavigate } from 'react-router-dom';
 import './HomePage.css';
+import logo from '../assets/Logo NO BG.png';
 
-function HomePage() {
+const HomePage = () => {
+  const navigate = useNavigate();
+
+  const navigateTo = (path) => {
+    navigate(path);
+  };
+
   return (
-    <div className="homepage">
-      <header className="homepage-header">
-        <img src={logo} className="homepage-logo" alt="logo" />
-        <h1>Bem-vindo ao Sistema de Senhas</h1>
-      </header>
-      <nav className="homepage-nav">
-        <ul>
-          <li>
-            <Link to="/criar-senha">Criar Senha</Link>
-          </li>
-          <li>
-            <Link to="/funcionario">Funcionário</Link>
-          </li>
-          <li>
-            <Link to="/acompanhar-senhas">Acompanhar Senhas</Link>
-          </li>
-        </ul>
-      </nav>
+    <div className="container">
+      <img src={logo} alt="Logo" className="logo" />
+      <h1>Bem-vindo ao Proticket</h1>
+      <button onClick={() => navigateTo('/utente')}>Utente</button>
+      <button onClick={() => navigateTo('/profissional')}>Profissional Saúde</button>
+      <button onClick={() => navigateTo('/funcionario')}>Funcionário</button>
     </div>
   );
-}
+};
 
 export default HomePage;

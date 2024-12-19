@@ -20,28 +20,34 @@ function escreverUltimoNumeroSenha(numero) {
   fs.writeFileSync(ultimoNumeroSenhaPath, JSON.stringify(json), 'utf8');
 }
 
-// Função para gerar um número de senha
-function gerarNumeroSenha() {
+// Função para gerar um número de senha com prefixo
+function gerarNumeroSenha(setor) {
   let ultimoNumero = lerUltimoNumeroSenha();
   const novoNumero = ultimoNumero + 1;
   escreverUltimoNumeroSenha(novoNumero);
-  return `S${novoNumero}`;
-}
 
-// Função para determinar o IdFila com base na opção selecionada
-function determinarIdFila(setor) {
+  let prefixo;
   switch (setor) {
     case 'Admissão':
+      prefixo = 'A';
+      break;
     case 'Consulta Doença Aguda':
-      return 1;
+      prefixo = 'U';
+      break;
     case 'Marcação':
+      prefixo = 'M';
+      break;
     case 'Renovação de Medicação Habitual':
-      return 2;
+      prefixo = 'R';
+      break;
     case 'Outros Assuntos':
-      return 3;
+      prefixo = 'O';
+      break;
     default:
-      return 1; // Valor padrão
+      prefixo = 'A'; // Valor padrão
   }
+
+  return `${prefixo}${novoNumero}`;
 }
 
 // Rota para obter todas as senhas
@@ -56,13 +62,12 @@ router.get('/senhas', async (req, res) => {
 
 // Rota para criar uma nova senha
 router.post('/senhas', async (req, res) => {
-  const { numeroUtenteSaude, admissaoBalcao, setor } = req.body;
+  const { numeroUtenteSaude, admissaoBalcao, setor, prioridade } = req.body;
   try {
-    const numeroSenha = gerarNumeroSenha(); // Gerar um número de senha conforme a especificação
+    const numeroSenha = gerarNumeroSenha(setor); // Gerar um número de senha conforme a especificação
     const dataEmissao = new Date().toISOString().split('T')[0];
     const horaEmissao = new Date().toISOString().split('T')[1].split('.')[0];
     const estado = 'pendente';
-    const idFila = determinarIdFila(setor); // Determinar o IdFila com base na opção selecionada
     const qrCode = `QR${numeroSenha}`; // Gerar um QRCode único
 
     console.log('Dados recebidos:', {
@@ -74,12 +79,12 @@ router.post('/senhas', async (req, res) => {
       dataEmissao,
       horaEmissao,
       estado,
-      idFila
+      prioridade
     });
 
     const novaSenha = await pool.query(
-      'INSERT INTO public.Senha (NumeroSenha, Setor, QRCode, DataEmissao, HoraEmissao, Estado, IdFila, NumeroUtenteSaude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
-      [numeroSenha, setor, qrCode, dataEmissao, horaEmissao, estado, idFila, numeroUtenteSaude]
+      'INSERT INTO public.Senha (NumeroSenha, Setor, QRCode, DataEmissao, HoraEmissao, Estado, Prioridade, NumeroUtenteSaude) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
+      [numeroSenha, setor, qrCode, dataEmissao, horaEmissao, estado, prioridade, numeroUtenteSaude]
     );
     console.log('Senha criada:', novaSenha.rows[0]);
     res.json(novaSenha.rows[0]);
@@ -155,5 +160,26 @@ router.get('/senhas-em-curso', async (req, res) => {
     res.status(500).send('Erro ao buscar senhas em curso');
   }
 });
+
+
+// Rota para obter todas as consultas de um utente específico
+router.get('/consultas/:numeroUtente', async (req, res) => {
+  const { numeroUtente } = req.params;
+  try {
+    const consultas = await pool.query(
+      `SELECT c.*, p.Nome AS nome_profissional
+       FROM public.Consulta c
+       JOIN public.ProfissionalSaude p ON c.IdProfissional = p.IdProfissional
+       WHERE c.NumeroUtenteSaude = $1`,
+      [numeroUtente]
+    );
+    res.json(consultas.rows);
+  } catch (err) {
+    console.error('Erro ao buscar consultas:', err.message);
+    res.status(500).send('Erro ao buscar consultas');
+  }
+});
+
+
 
 module.exports = router;
