@@ -50,6 +50,11 @@ function gerarNumeroSenha(setor) {
   return `${prefixo}${novoNumero}`;
 }
 
+// Função para determinar a prioridade com base na opção selecionada
+function determinarPrioridade(admissaoBalcao) {
+  return admissaoBalcao ? 'alta' : 'normal';
+}
+
 // Rota para obter todas as senhas
 router.get('/senhas', async (req, res) => {
   try {
@@ -62,12 +67,13 @@ router.get('/senhas', async (req, res) => {
 
 // Rota para criar uma nova senha
 router.post('/senhas', async (req, res) => {
-  const { numeroUtenteSaude, admissaoBalcao, setor, prioridade } = req.body;
+  const { numeroUtenteSaude, admissaoBalcao, setor } = req.body;
   try {
     const numeroSenha = gerarNumeroSenha(setor); // Gerar um número de senha conforme a especificação
     const dataEmissao = new Date().toISOString().split('T')[0];
     const horaEmissao = new Date().toISOString().split('T')[1].split('.')[0];
     const estado = 'pendente';
+    const prioridade = determinarPrioridade(admissaoBalcao); // Determinar a prioridade com base na opção selecionada
     const qrCode = `QR${numeroSenha}`; // Gerar um QRCode único
 
     console.log('Dados recebidos:', {
@@ -95,31 +101,31 @@ router.post('/senhas', async (req, res) => {
 });
 
 // Rota para avançar uma senha de uma fila específica
-router.put('/senhas/avancar/:idFila', async (req, res) => {
-  const { idFila } = req.params;
+router.put('/senhas/avancar/:fila', async (req, res) => {
+  const { fila } = req.params;
   try {
     // Atualizar a senha "em curso" para "expirada"
     await pool.query(
-      'UPDATE public.Senha SET Estado = $1 WHERE Estado = $2 AND IdFila = $3',
-      ['expirada', 'em curso', idFila]
+      'UPDATE public.Senha SET Estado = $1 WHERE Estado = $2',
+      ['expirada', 'em curso']
     );
 
     // Selecionar a próxima senha pendente
     const senhaPendente = await pool.query(
-      'SELECT * FROM public.Senha WHERE Estado = $1 AND IdFila = $2 ORDER BY DataEmissao, HoraEmissao LIMIT 1',
-      ['pendente', idFila]
+      'SELECT * FROM public.Senha WHERE Estado = $1 ORDER BY DataEmissao, HoraEmissao LIMIT 1',
+      ['pendente']
     );
 
     if (senhaPendente.rows.length === 0) {
-      return res.status(404).send('Nenhuma senha pendente encontrada para a fila especificada');
+      return res.status(404).send('Nenhuma senha pendente encontrada');
     }
 
     const senhaId = senhaPendente.rows[0].idsenha;
 
-    // Atualizar a próxima senha pendente para "em curso"
+    // Atualizar a próxima senha pendente para "em curso" e associar à fila
     const senhaAvancada = await pool.query(
-      'UPDATE public.Senha SET Estado = $1 WHERE IdSenha = $2 RETURNING *',
-      ['em curso', senhaId]
+      'UPDATE public.Senha SET Estado = $1, Fila = $2 WHERE IdSenha = $3 RETURNING *',
+      ['em curso', fila, senhaId]
     );
 
     res.json(senhaAvancada.rows[0]);
@@ -129,16 +135,14 @@ router.put('/senhas/avancar/:idFila', async (req, res) => {
   }
 });
 
-// Rota para obter as últimas 5 senhas pendentes de cada fila
+// Rota para obter as últimas 5 senhas pendentes
 router.get('/ultimas-senhas-pendentes', async (req, res) => {
   try {
     const ultimasSenhasPendentes = await pool.query(`
-      SELECT * FROM (
-        SELECT *, ROW_NUMBER() OVER (PARTITION BY IdFila ORDER BY DataEmissao DESC, HoraEmissao DESC) AS rn
-        FROM public.Senha
-        WHERE Estado = 'pendente'
-      ) sub
-      WHERE rn <= 5
+      SELECT * FROM public.Senha
+      WHERE Estado = 'pendente'
+      ORDER BY DataEmissao DESC, HoraEmissao DESC
+      LIMIT 5
     `);
     res.json(ultimasSenhasPendentes.rows);
   } catch (err) {
@@ -160,26 +164,5 @@ router.get('/senhas-em-curso', async (req, res) => {
     res.status(500).send('Erro ao buscar senhas em curso');
   }
 });
-
-
-// Rota para obter todas as consultas de um utente específico
-router.get('/consultas/:numeroUtente', async (req, res) => {
-  const { numeroUtente } = req.params;
-  try {
-    const consultas = await pool.query(
-      `SELECT c.*, p.Nome AS nome_profissional
-       FROM public.Consulta c
-       JOIN public.ProfissionalSaude p ON c.IdProfissional = p.IdProfissional
-       WHERE c.NumeroUtenteSaude = $1`,
-      [numeroUtente]
-    );
-    res.json(consultas.rows);
-  } catch (err) {
-    console.error('Erro ao buscar consultas:', err.message);
-    res.status(500).send('Erro ao buscar consultas');
-  }
-});
-
-
 
 module.exports = router;

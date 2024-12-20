@@ -56,17 +56,18 @@ CREATE TABLE Senha (
     HoraEmissao TIME,
     HoraPrevista TIME,
     Estado VARCHAR(20),
+	Fila INT,
     IdQuiosque INT,
     IdFuncionario INT,
     NumeroUtenteSaude INT,
-    FOREIGN KEY (NumeroUtenteSaude) REFERENCES Funcionario(NumeroUtenteSaude),
+    IdDispositivo INT,
+    FOREIGN KEY (IdDispositivo) REFERENCES PainelSenhas(IdDispositivo),
+    FOREIGN KEY (NumeroUtenteSaude) REFERENCES Utente(NumeroUtenteSaude),
     FOREIGN KEY (IdFuncionario) REFERENCES Funcionario(IdFuncionario)
 );
 
 
 CREATE TABLE PainelSenhas (
     IdDispositivo INT PRIMARY KEY,
-    TipoDispositivo VARCHAR(50),
-    Fila VARCHAR(100),
-    NumeroSenha INT
+    TipoDispositivo VARCHAR(50)
 );
