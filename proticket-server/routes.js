@@ -4,7 +4,7 @@ const pool = require('./db');
 const fs = require('fs');
 const path = require('path');
 const { getAuthUrl, getAccessToken, loadAccessToken } = require('./googleAuth');
-const { createEvent } = require('./googleCalendar');
+const { createEvent } = require('../proticket-client/googleCalendar');
 
 
 // Caminho para o arquivo que armazena o último número de senha

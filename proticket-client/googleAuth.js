@@ -2,12 +2,11 @@ const fs = require('fs');
 const { google } = require('googleapis');
 const path = require('path');
 
-// Carregar as credenciais do cliente OAuth 2.0
-const credentialsPath = path.join(__dirname, 'credentials.json');
-const credentials = JSON.parse(fs.readFileSync(credentialsPath));
+// Carregar as credenciais do cliente OAuth 2.0 a partir de variáveis de ambiente
+const client_id = process.env.GOOGLE_CLIENT_ID;
+const client_secret = process.env.GOOGLE_CLIENT_SECRET;
+const redirect_uris = [process.env.GOOGLE_REDIRECT_URI];
 
-// Configurar o cliente OAuth 2.0
-const { client_secret, client_id, redirect_uris } = credentials.installed;
 const oAuth2Client = new google.auth.OAuth2(client_id, client_secret, redirect_uris[0]);
 
 // Função para gerar a URL de autenticação
