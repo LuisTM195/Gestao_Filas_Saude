@@ -57,6 +57,9 @@ function FuncionarioPage() {
       <div style={{ position: 'fixed', right: '20px', bottom: '20px' }}>
         <button onClick={() => navigate('/acompanhamento')}>Abrir Acompanhamento</button>
       </div>
+      <div style={{ position: 'fixed', left: '20px', bottom: '20px' }}>
+        <button onClick={() => navigate(-1)}>Voltar</button>
+      </div>
     </div>
   );
 }

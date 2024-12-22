@@ -3,6 +3,7 @@ const path = require('path'); // Certifique-se de que o módulo path está sendo
 const app = express();
 const cors = require('cors');
 const pool = require('./db'); // Certifique-se de que o arquivo db.js está configurado corretamente
+const routes = require('./src/routes');
 
 // Middleware
 app.use(cors());

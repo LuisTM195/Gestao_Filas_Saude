@@ -3,6 +3,9 @@ const router = express.Router();
 const pool = require('./db');
 const fs = require('fs');
 const path = require('path');
+const { getAuthUrl, getAccessToken, loadAccessToken } = require('./googleAuth');
+const { createEvent } = require('./googleCalendar');
+
 
 // Caminho para o arquivo que armazena o último número de senha
 const ultimoNumeroSenhaPath = path.join(__dirname, 'ultimoNumeroSenha.json');
@@ -164,5 +167,61 @@ router.get('/senhas-em-curso', async (req, res) => {
     res.status(500).send('Erro ao buscar senhas em curso');
   }
 });
+
+
+
+//-------------------GOOGLE-------------------------
+// Rota para redirecionar o usuário para a URL de autenticação
+router.get('/auth/google', (req, res) => {
+  const authUrl = getAuthUrl();
+  res.redirect(authUrl);
+});
+
+// Rota para receber o código de autenticação e obter o token de acesso
+router.get('/auth/google/callback', async (req, res) => {
+  const code = req.query.code;
+  try {
+    await getAccessToken(code);
+    res.send('Autenticação bem-sucedida! Você pode fechar esta janela.');
+  } catch (error) {
+    console.error('Erro ao obter o token de acesso:', error);
+    res.status(500).send('Erro ao obter o token de acesso.');
+  }
+});
+
+// Carregar o token de acesso ao iniciar o servidor
+loadAccessToken();
+
+// Rota para criar uma nova consulta
+router.post('/consultas', async (req, res) => {
+  const { data, hora, numeroUtenteSaude, idProfissional } = req.body;
+  try {
+    const novaConsulta = await pool.query(
+      'INSERT INTO public.Consulta (Data, Hora, NumeroUtenteSaude, IdProfissional) VALUES ($1, $2, $3, $4) RETURNING *',
+      [data, hora, numeroUtenteSaude, idProfissional]
+    );
+
+    // Criar evento no Google Calendar
+    const event = {
+      summary: 'Consulta Médica',
+      description: `Consulta com o profissional de saúde ID: ${idProfissional}`,
+      start: {
+        dateTime: `${data}T${hora}:00`,
+        timeZone: 'America/Sao_Paulo',
+      },
+      end: {
+        dateTime: `${data}T${hora + 1}:00`, // Supondo que a consulta dure 1 hora
+        timeZone: 'America/Sao_Paulo',
+      },
+    };
+    await createEvent(event);
+
+    res.json(novaConsulta.rows[0]);
+  } catch (err) {
+    console.error('Erro ao criar consulta:', err.message);
+    res.status(500).send('Erro ao criar consulta');
+  }
+});
+
 
 module.exports = router;
