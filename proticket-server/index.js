@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path'); // Certifique-se de que o módulo path está sendo usado apenas no servidor
 const app = express();
