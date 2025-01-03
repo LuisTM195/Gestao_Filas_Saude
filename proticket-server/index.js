@@ -1,15 +1,16 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path'); // Certifique-se de que o módulo path está sendo usado apenas no servidor
 const app = express();
 const cors = require('cors');
 const pool = require('./db'); // Certifique-se de que o arquivo db.js está configurado corretamente
+const routes = require('./routes');
 
 // Middleware
 app.use(cors());
 app.use(express.json()); // req.body
 
-// Rotas
-app.use('/api', require('./routes')); // Certifique-se de que o arquivo routes.js está configurado corretamente
+app.use('/api', routes);
 
 // Servir os arquivos estáticos do React
 app.use(express.static(path.join(__dirname, '../proticket-client/build')));
