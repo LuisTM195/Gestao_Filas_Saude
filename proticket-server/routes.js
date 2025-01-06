@@ -3,9 +3,8 @@ const router = express.Router();
 const pool = require('./db');
 const fs = require('fs');
 const path = require('path');
-const { getAuthUrl, getAccessToken, loadAccessToken } = require('./googleAuth');
+const { getAuthUrl, getAccessToken, loadAccessToken } = require('../proticket-client/googleAuth');
 const { createEvent } = require('../proticket-client/googleCalendar');
-
 
 // Caminho para o arquivo que armazena o último número de senha
 const ultimoNumeroSenhaPath = path.join(__dirname, 'ultimoNumeroSenha.json');
@@ -25,32 +24,10 @@ function escreverUltimoNumeroSenha(numero) {
 
 // Função para gerar um número de senha com prefixo
 function gerarNumeroSenha(setor) {
-  let ultimoNumero = lerUltimoNumeroSenha();
+  const ultimoNumero = lerUltimoNumeroSenha();
   const novoNumero = ultimoNumero + 1;
   escreverUltimoNumeroSenha(novoNumero);
-
-  let prefixo;
-  switch (setor) {
-    case 'Admissão':
-      prefixo = 'A';
-      break;
-    case 'Consulta Doença Aguda':
-      prefixo = 'U';
-      break;
-    case 'Marcação':
-      prefixo = 'M';
-      break;
-    case 'Renovação de Medicação Habitual':
-      prefixo = 'R';
-      break;
-    case 'Outros Assuntos':
-      prefixo = 'O';
-      break;
-    default:
-      prefixo = 'A'; // Valor padrão
-  }
-
-  return `${prefixo}${novoNumero}`;
+  return `${setor}-${novoNumero}`;
 }
 
 // Função para determinar a prioridade com base na opção selecionada
@@ -168,8 +145,6 @@ router.get('/senhas-em-curso', async (req, res) => {
   }
 });
 
-
-
 //-------------------GOOGLE-------------------------
 // Rota para redirecionar o usuário para a URL de autenticação
 router.get('/auth/google', (req, res) => {
@@ -222,6 +197,5 @@ router.post('/consultas', async (req, res) => {
     res.status(500).send('Erro ao criar consulta');
   }
 });
-
 
 module.exports = router;

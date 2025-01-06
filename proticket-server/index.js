@@ -4,14 +4,14 @@ const path = require('path'); // Certifique-se de que o módulo path está sendo
 const app = express();
 const cors = require('cors');
 const pool = require('./db'); // Certifique-se de que o arquivo db.js está configurado corretamente
-const routes = require('./src/routes');
+const routes = require('./routes'); // Updated path
 
 // Middleware
 app.use(cors());
 app.use(express.json()); // req.body
 
 // Rotas
-app.use('/api', require('./routes')); // Certifique-se de que o arquivo routes.js está configurado corretamente
+app.use('/api', routes); // Certifique-se de que o arquivo routes.js está configurado corretamente
 
 // Servir os arquivos estáticos do React
 app.use(express.static(path.join(__dirname, '../proticket-client/build')));
