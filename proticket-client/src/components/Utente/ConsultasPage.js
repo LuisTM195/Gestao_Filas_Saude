@@ -32,8 +32,8 @@ const ConsultasPage = () => {
       </div>
       <ul>
         {consultas.map((consulta) => (
-          <li key={consulta.ID_Consulta}>
-            {consulta.Data} {consulta.Hora} - Estado: {consulta.Estado} - Utente: {consulta.NumeroUtenteSaude} - Profissional: {consulta.IdProfissional}
+          <li key={consulta.idconsulta}>
+            {new Date(consulta.data).toLocaleDateString()} {consulta.hora} - Estado: {consulta.estado} - Utente: {consulta.numeroutentesaude} - Profissional: {consulta.idprofissional}
           </li>
         ))}
       </ul>

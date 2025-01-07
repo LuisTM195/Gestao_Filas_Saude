@@ -165,7 +165,9 @@ router.get('/consultas/:numeroUtenteSaude', async (req, res) => {
 
 // Rota para criar uma nova consulta
 router.post('/consultas', async (req, res) => {
-  const { estado, data, hora, numeroUtenteSaude, idProfissional } = req.body;
+  const { data, hora, numeroUtenteSaude, idProfissional } = req.body;
+  const estado = 'Pendente'; // Defina o estado como "Pendente"
+  console.log('Dados recebidos:', req.body); // Adicione este log para verificar os dados recebidos
   try {
     const novaConsulta = await pool.query(
       'INSERT INTO Consulta (Estado, Data, Hora, NumeroUtenteSaude, IdProfissional) VALUES ($1, $2, $3, $4, $5) RETURNING *',
@@ -184,7 +186,7 @@ router.put('/consultas/:id', async (req, res) => {
   const { estado, data, hora, numeroUtenteSaude, idProfissional } = req.body;
   try {
     await pool.query(
-      'UPDATE Consulta SET Estado = $1, Data = $2, Hora = $3, NumeroUtenteSaude = $4, IdProfissional = $5 WHERE ID_Consulta = $6',
+      'UPDATE Consulta SET Estado = $1, Data = $2, Hora = $3, NumeroUtenteSaude = $4, IdProfissional = $5 WHERE IdConsulta = $6',
       [estado, data, hora, numeroUtenteSaude, idProfissional, id]
     );
     res.send('Consulta editada com sucesso!');
@@ -195,17 +197,16 @@ router.put('/consultas/:id', async (req, res) => {
 });
 
 // Rota para apagar uma consulta
-router.delete('/consultas/:id', async (req, res) => {
-  const { id } = req.params;
+router.delete('/consultas/:idConsulta', async (req, res) => {
+  const { idConsulta } = req.params;
   try {
-    await pool.query('DELETE FROM Consulta WHERE ID_Consulta = $1', [id]);
+    await pool.query('DELETE FROM Consulta WHERE IdConsulta = $1', [idConsulta]);
     res.send('Consulta apagada com sucesso!');
   } catch (err) {
     console.error('Erro ao apagar consulta:', err.message);
     res.status(500).send('Erro ao apagar consulta');
   }
 });
-
 
 
 

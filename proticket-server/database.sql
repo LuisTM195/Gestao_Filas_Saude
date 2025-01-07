@@ -19,7 +19,7 @@ CREATE TABLE Prescricao (
 );
 
 CREATE TABLE Consulta (
-    ID_Consulta INT PRIMARY KEY,
+    IdConsulta SERIAL PRIMARY KEY,
 	Estado VARCHAR(20),
     Data DATE,
     Hora TIME,
