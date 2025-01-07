@@ -6,6 +6,7 @@ const path = require('path');
 const { getAuthUrl, getAccessToken, loadAccessToken } = require('../proticket-client/googleAuth');
 const { createEvent } = require('../proticket-client/googleCalendar');
 
+//-------------SENHAS-------------------
 // Caminho para o arquivo que armazena o último número de senha
 const ultimoNumeroSenhaPath = path.join(__dirname, 'ultimoNumeroSenha.json');
 
@@ -144,6 +145,72 @@ router.get('/senhas-em-curso', async (req, res) => {
     res.status(500).send('Erro ao buscar senhas em curso');
   }
 });
+
+
+
+//-------------------CONSULTAS----------------------------
+// Rota para buscar consultas por NumeroUtenteSaude
+router.get('/consultas/:numeroUtenteSaude', async (req, res) => {
+  const { numeroUtenteSaude } = req.params;
+  try {
+    const result = await pool.query('SELECT * FROM Consulta WHERE NumeroUtenteSaude = $1', [numeroUtenteSaude]);
+    console.log(result.rows); // Verifique os dados retornados
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Erro ao buscar consultas:', err.message);
+    res.status(500).send('Erro ao buscar consultas');
+  }
+});
+
+
+// Rota para criar uma nova consulta
+router.post('/consultas', async (req, res) => {
+  const { estado, data, hora, numeroUtenteSaude, idProfissional } = req.body;
+  try {
+    const novaConsulta = await pool.query(
+      'INSERT INTO Consulta (Estado, Data, Hora, NumeroUtenteSaude, IdProfissional) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [estado, data, hora, numeroUtenteSaude, idProfissional]
+    );
+    res.json(novaConsulta.rows[0]);
+  } catch (err) {
+    console.error('Erro ao criar consulta:', err.message);
+    res.status(500).send('Erro ao criar consulta');
+  }
+});
+
+// Rota para editar uma consulta
+router.put('/consultas/:id', async (req, res) => {
+  const { id } = req.params;
+  const { estado, data, hora, numeroUtenteSaude, idProfissional } = req.body;
+  try {
+    await pool.query(
+      'UPDATE Consulta SET Estado = $1, Data = $2, Hora = $3, NumeroUtenteSaude = $4, IdProfissional = $5 WHERE ID_Consulta = $6',
+      [estado, data, hora, numeroUtenteSaude, idProfissional, id]
+    );
+    res.send('Consulta editada com sucesso!');
+  } catch (err) {
+    console.error('Erro ao editar consulta:', err.message);
+    res.status(500).send('Erro ao editar consulta');
+  }
+});
+
+// Rota para apagar uma consulta
+router.delete('/consultas/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+    await pool.query('DELETE FROM Consulta WHERE ID_Consulta = $1', [id]);
+    res.send('Consulta apagada com sucesso!');
+  } catch (err) {
+    console.error('Erro ao apagar consulta:', err.message);
+    res.status(500).send('Erro ao apagar consulta');
+  }
+});
+
+
+
+
+
+
 
 //-------------------GOOGLE-------------------------
 // Rota para redirecionar o usuário para a URL de autenticação

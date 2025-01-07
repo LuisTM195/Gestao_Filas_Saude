@@ -20,6 +20,7 @@ CREATE TABLE Prescricao (
 
 CREATE TABLE Consulta (
     ID_Consulta INT PRIMARY KEY,
+	Estado VARCHAR(20),
     Data DATE,
     Hora TIME,
     NumeroUtenteSaude INT,
