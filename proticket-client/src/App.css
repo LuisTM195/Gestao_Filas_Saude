@@ -1,12 +1,120 @@
+/* Estilos globais */
 body {
-  font-family: Arial, sans-serif;
-}
-
-h1 {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: url('./assets/hospital_bg.jpg') no-repeat center center fixed;
+  background-size: cover;
   color: #333;
 }
 
-form {
+/* Estilos do cabeçalho */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #007bff; /* Fundo azul */
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos do conteúdo principal */
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 120px); /* Altura total menos a altura do cabeçalho e rodapé */
+  padding: 20px;
+}
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9); /* Fundo semi-transparente */
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.login-container:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+}
+
+.login-container img {
+  height: 80px;
   margin-bottom: 20px;
 }
 
+.login-container h1 {
+  font-family: 'Montserrat', sans-serif; /* Fonte mais moderna */
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #007bff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.login-container label {
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.login-container input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.login-container input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.login-container button {
+  padding: 12px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.login-container button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Estilos do rodapé */
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background: #007bff; /* Fundo azul */
+  color: white;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+}
+
+footer img {
+  height: 30px;
+  margin-left: 10px;
+}
+
+footer span {
+  font-family: 'Roboto', sans-serif;
+}

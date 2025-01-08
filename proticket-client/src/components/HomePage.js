@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/Logo_NO_BG.png'; // Certifique-se de que o caminho está correto
+import '../App.css'; // Certifique-se de que o arquivo CSS está sendo importado
 
 const HomePage = () => {
   const [email, setEmail] = useState('');
@@ -28,9 +30,10 @@ const HomePage = () => {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form>
+    <main>
+      <div className="login-container">
+        <img src={logo} alt="Logo" />
+        <h1>Login</h1>
         <div>
           <label>Email:</label>
           <input
@@ -50,8 +53,8 @@ const HomePage = () => {
         <button type="button" onClick={handleLogin}>
           Login
         </button>
-      </form>
-    </div>
+      </div>
+    </main>
   );
 };
 
