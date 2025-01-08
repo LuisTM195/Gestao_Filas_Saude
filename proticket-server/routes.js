@@ -148,6 +148,41 @@ router.get('/senhas-em-curso', async (req, res) => {
 
 
 
+//------------------LOGIN-----------------------
+// Rota para login
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Verifique se o usuário é um utente
+    const utenteResult = await pool.query('SELECT * FROM Utente WHERE Email = $1 AND PalavraPass = $2', [email, password]);
+    if (utenteResult.rows.length > 0) {
+      return res.json({ role: 'utente' });
+    }
+
+    // Verifique se o usuário é um profissional de saúde
+    const profissionalResult = await pool.query('SELECT * FROM ProfissionalSaude WHERE Email = $1 AND PalavraPass = $2', [email, password]);
+    if (profissionalResult.rows.length > 0) {
+      return res.json({ role: 'profissional' });
+    }
+
+    // Verifique se o usuário é um funcionário
+    const funcionarioResult = await pool.query('SELECT * FROM Funcionario WHERE Email = $1 AND PalavraPass = $2', [email, password]);
+    if (funcionarioResult.rows.length > 0) {
+      return res.json({ role: 'funcionario' });
+    }
+
+    // Se o email não for encontrado em nenhuma tabela
+    res.status(401).send('Email ou palavra-passe incorretos');
+  } catch (err) {
+    console.error('Erro ao fazer login:', err.message);
+    res.status(500).send('Erro ao fazer login');
+  }
+});
+
+
+
+
 //-------------------CONSULTAS----------------------------
 // Rota para buscar consultas por NumeroUtenteSaude
 router.get('/consultas/:numeroUtenteSaude', async (req, res) => {
