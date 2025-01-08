@@ -2,7 +2,7 @@
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
-  background: url('./assets/hospital_bg.jpg') no-repeat center center fixed;
+  background: url('./assets/hopital-2.jpg') no-repeat center center fixed;
   background-size: cover;
   color: #333;
 }
@@ -31,7 +31,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(255, 255, 255, 0.9); /* Fundo semi-transparente */
+  background: rgba(255, 255, 255, 0.726); 
   padding: 40px;
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
@@ -102,7 +102,7 @@ footer {
   align-items: center;
   justify-content: center;
   padding: 10px;
-  background: #007bff; /* Fundo azul */
+  background: #519ff3; /* Fundo azul */
   color: white;
   position: fixed;
   width: 100%;
