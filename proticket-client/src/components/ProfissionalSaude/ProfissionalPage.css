@@ -1,0 +1,70 @@
+/* ProfissionalPage.css */
+
+/* Estilos gerais para a página do profissional de saúde */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: url('../../assets/hospital-.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #333;
+}
+
+header {
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header img {
+  height: 50px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+header .user-name {
+  font-size: 18px;
+}
+
+main {
+  padding: 20px;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+  margin-top: 0;
+}
+
+button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+button.voltar {
+  background: #6c757d;
+}
+
+button.voltar:hover {
+  background: #5a6268;
+}

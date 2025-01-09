@@ -148,6 +148,44 @@ router.get('/senhas-em-curso', async (req, res) => {
 
 
 
+//-------------------UTENTES-------------------------
+// Rota para criar um novo utente
+router.post('/utentes', async (req, res) => {
+  const { numeroUtenteSaude, nome, cartaoCidadao, dataNascimento, telefone, email, palavraPass } = req.body;
+
+  try {
+    console.log('Dados recebidos:', {
+      numeroUtenteSaude,
+      nome,
+      cartaoCidadao,
+      dataNascimento,
+      telefone,
+      email,
+      palavraPass
+    });
+
+    const query = `
+      INSERT INTO Utente (NumeroUtenteSaude, Nome, CartaoCidadao, DataNascimento, Telefone, Email, PalavraPass)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING *
+    `;
+    const values = [numeroUtenteSaude, nome, cartaoCidadao, dataNascimento, telefone, email, palavraPass];
+
+    console.log('Executando consulta SQL:', query);
+    console.log('Com valores:', values);
+
+    const newUtente = await pool.query(query, values);
+
+    console.log('Utente criado:', newUtente.rows[0]);
+    res.status(201).json(newUtente.rows[0]);
+  } catch (err) {
+    console.error('Erro ao criar utente:', err.message);
+    res.status(500).send('Erro ao criar utente');
+  }
+});
+
+
+
 //------------------LOGIN-----------------------
 // Rota para login
 router.post('/login', async (req, res) => {

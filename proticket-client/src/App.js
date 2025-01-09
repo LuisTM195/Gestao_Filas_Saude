@@ -10,6 +10,7 @@ import AcompanhamentoPage from './components/Funcionario/AcompanhamentoPage';
 import CriarConsultaPage from './components/ProfissionalSaude/CriarConsultaPage';
 import ApagarConsultaPage from './components/ProfissionalSaude/ApagarConsultaPage';
 import EditarConsultaPage from './components/ProfissionalSaude/EditarConsultaPage';
+import CriarUtentePage from './components/Utente/CriarUtentePage'; // Importe o componente CriarUtentePage
 import snsLogo from './assets/Símbolo_do_SNS.png'; // Certifique-se de que o caminho está correto
 import './App.css'; // Certifique-se de que o caminho está correto
 
@@ -28,8 +29,9 @@ const App = () => {
             <Route path="/consultas" element={<ConsultasPage />} />
             <Route path="/acompanhamento" element={<AcompanhamentoPage />} />
             <Route path="/criar-consulta" element={<CriarConsultaPage />} />
-            <Route path="/apagar-consulta" element={<ApagarConsultaPage />} />
+            <Route path="/apagar-consulta" element={<ApagarConsultaPage />} /> {/* Adicione a rota para ApagarConsultaPage */}
             <Route path="/editar-consulta" element={<EditarConsultaPage />} />
+            <Route path="/criar-utente" element={<CriarUtentePage />} /> {/* Adicione a rota para CriarUtentePage */}
           </Routes>
         </Router>
       </main>
