@@ -55,6 +55,7 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  margin: 5px; /* Adicione margem para espaçamento entre botões */
 }
 
 button:hover {
@@ -67,4 +68,38 @@ button.voltar {
 
 button.voltar:hover {
   background: #5a6268;
+}
+
+.calendar-form {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-form h3 {
+  margin-top: 0;
+}
+
+.calendar-form input {
+  display: block;
+  width: calc(100% - 20px);
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.calendar-form button {
+  background: #28a745;
+}
+
+.calendar-form button:hover {
+  background: #218838;
+}
+
+.calendar-embed {
+  margin-top: 20px;
+  text-align: center;
 }

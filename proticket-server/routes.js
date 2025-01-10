@@ -3,8 +3,10 @@ const router = express.Router();
 const pool = require('./db');
 const fs = require('fs');
 const path = require('path');
-const { getAuthUrl, getAccessToken, loadAccessToken } = require('../proticket-client/googleAuth');
-const { createEvent } = require('../proticket-client/googleCalendar');
+const { createEvent } = require('./googleCalendar');
+const { listEvents } = require('./googleCalendar');
+const { getAuthUrl } = require('./googleAuth'); // Certifique-se de que o caminho está correto
+
 
 //-------------SENHAS-------------------
 // Caminho para o arquivo que armazena o último número de senha
@@ -287,55 +289,67 @@ router.delete('/consultas/:idConsulta', async (req, res) => {
 
 
 //-------------------GOOGLE-------------------------
-// Rota para redirecionar o usuário para a URL de autenticação
-router.get('/auth/google', (req, res) => {
-  const authUrl = getAuthUrl();
-  res.redirect(authUrl);
-});
-
-// Rota para receber o código de autenticação e obter o token de acesso
-router.get('/auth/google/callback', async (req, res) => {
-  const code = req.query.code;
+// Rota para listar eventos do Google Calendar
+router.get('/google-calendar/events', async (req, res) => {
   try {
-    await getAccessToken(code);
-    res.send('Autenticação bem-sucedida! Você pode fechar esta janela.');
-  } catch (error) {
-    console.error('Erro ao obter o token de acesso:', error);
-    res.status(500).send('Erro ao obter o token de acesso.');
+    const events = await listEvents();
+    res.json(events);
+  } catch (err) {
+    console.error('Erro ao listar eventos do Google Calendar:', err.message);
+    res.status(500).send('Erro ao listar eventos do Google Calendar');
   }
 });
 
-// Carregar o token de acesso ao iniciar o servidor
-loadAccessToken();
 
-// Rota para criar uma nova consulta
-router.post('/consultas', async (req, res) => {
-  const { data, hora, numeroUtenteSaude, idProfissional } = req.body;
+// Rota para obter a URL de autenticação do Google
+router.get('/google-calendar/auth-url', (req, res) => {
   try {
-    const novaConsulta = await pool.query(
-      'INSERT INTO public.Consulta (Data, Hora, NumeroUtenteSaude, IdProfissional) VALUES ($1, $2, $3, $4) RETURNING *',
-      [data, hora, numeroUtenteSaude, idProfissional]
-    );
-
-    // Criar evento no Google Calendar
-    const event = {
-      summary: 'Consulta Médica',
-      description: `Consulta com o profissional de saúde ID: ${idProfissional}`,
-      start: {
-        dateTime: `${data}T${hora}:00`,
-        timeZone: 'America/Sao_Paulo',
-      },
-      end: {
-        dateTime: `${data}T${hora + 1}:00`, // Supondo que a consulta dure 1 hora
-        timeZone: 'America/Sao_Paulo',
-      },
-    };
-    await createEvent(event);
-
-    res.json(novaConsulta.rows[0]);
+    const authUrl = getAuthUrl();
+    res.json({ authUrl });
   } catch (err) {
-    console.error('Erro ao criar consulta:', err.message);
-    res.status(500).send('Erro ao criar consulta');
+    console.error('Erro ao obter URL de autenticação do Google:', err.message);
+    res.status(500).send('Erro ao obter URL de autenticação do Google');
+  }
+});
+
+
+// Rota para receber o código de autenticação e obter o token de acesso
+router.get('/google-calendar/callback', async (req, res) => {
+  const code = req.query.code;
+  try {
+    const tokens = await getAccessToken(code);
+    res.redirect(`http://localhost:3000/profissional?tokens=${JSON.stringify(tokens)}`);
+  } catch (err) {
+    console.error('Erro ao obter token de acesso do Google:', err.message);
+    res.status(500).send('Erro ao obter token de acesso do Google');
+  }
+});
+
+// Rota para criar um evento no Google Calendar
+router.post('/google-calendar/create-event', async (req, res) => {
+  const { summary, description, start, end, tokens } = req.body;
+
+  const event = {
+    summary,
+    description,
+    start: {
+      dateTime: start,
+      timeZone: 'America/Sao_Paulo', // Ajuste o fuso horário conforme necessário
+    },
+    end: {
+      dateTime: end,
+      timeZone: 'America/Sao_Paulo', // Ajuste o fuso horário conforme necessário
+    },
+  };
+
+  try {
+    const oAuth2Client = new google.auth.OAuth2();
+    oAuth2Client.setCredentials(JSON.parse(tokens));
+    const createdEvent = await createEvent(event, oAuth2Client);
+    res.json(createdEvent);
+  } catch (err) {
+    console.error('Erro ao criar evento no Google Calendar:', err.message);
+    res.status(500).send('Erro ao criar evento no Google Calendar');
   }
 });
 
