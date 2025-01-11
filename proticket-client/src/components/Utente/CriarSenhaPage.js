@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './CriarSenhaPage.css'; // Certifique-se de que o arquivo CSS está sendo importado
 
 function CriarSenhaPage() {
   const [setor, setSetor] = useState('');
@@ -59,104 +60,108 @@ function CriarSenhaPage() {
   };
 
   return (
-    <div>
-      <h1>Criar Senha</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            <input
-              type="radio"
-              value="Admissão"
-              checked={setor === 'Admissão'}
-              onChange={handleSetorChange}
-            />
-            Admissão
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              value="Consulta Doença Aguda"
-              checked={setor === 'Consulta Doença Aguda'}
-              onChange={handleSetorChange}
-            />
-            Consulta Doença Aguda
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              value="Marcação"
-              checked={setor === 'Marcação'}
-              onChange={handleSetorChange}
-            />
-            Marcação
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              value="Renovação de Medicação Habitual"
-              checked={setor === 'Renovação de Medicação Habitual'}
-              onChange={handleSetorChange}
-            />
-            Renovação de Medicação Habitual
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              value="Outros Assuntos"
-              checked={setor === 'Outros Assuntos'}
-              onChange={handleSetorChange}
-            />
-            Outros Assuntos
-          </label>
-        </div>
-        <div>
-          <label>
-            Número de Utente de Saúde:
-            <input
-              type="text"
-              value={numeroUtente}
-              onChange={handleNumeroUtenteChange}
-              disabled={admissaoBalcao}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="checkbox"
-              checked={admissaoBalcao}
-              onChange={handleAdmissaoBalcaoChange}
-            />
-            Admissão ao Balcão (sem número de utente de saúde)
-          </label>
-        </div>
-        {admissaoBalcao && (
-          <div>
-            <label>
-              Prioridade:
-              <select value={prioridade} onChange={handlePrioridadeChange}>
-                <option value="normal">Normal</option>
-                <option value="alta">Alta</option>
-              </select>
-            </label>
-            {mostrarAviso && (
-              <p style={{ color: 'red' }}>
-                Pode ser solicitado documento comprovativo de incapacidade
-              </p>
+    <div className="container">
+      <main>
+        <div className="card">
+          <h2>Criar Senha</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>
+                <input
+                  type="radio"
+                  value="Admissão"
+                  checked={setor === 'Admissão'}
+                  onChange={handleSetorChange}
+                />
+                Admissão
+              </label>
+            </div>
+            <div className="form-group">
+              <label>
+                <input
+                  type="radio"
+                  value="Consulta Doença Aguda"
+                  checked={setor === 'Consulta Doença Aguda'}
+                  onChange={handleSetorChange}
+                />
+                Consulta Doença Aguda
+              </label>
+            </div>
+            <div className="form-group">
+              <label>
+                <input
+                  type="radio"
+                  value="Marcação"
+                  checked={setor === 'Marcação'}
+                  onChange={handleSetorChange}
+                />
+                Marcação
+              </label>
+            </div>
+            <div className="form-group">
+              <label>
+                <input
+                  type="radio"
+                  value="Renovação de Medicação Habitual"
+                  checked={setor === 'Renovação de Medicação Habitual'}
+                  onChange={handleSetorChange}
+                />
+                Renovação de Medicação Habitual
+              </label>
+            </div>
+            <div className="form-group">
+              <label>
+                <input
+                  type="radio"
+                  value="Outros Assuntos"
+                  checked={setor === 'Outros Assuntos'}
+                  onChange={handleSetorChange}
+                />
+                Outros Assuntos
+              </label>
+            </div>
+            <div className="form-group">
+              <label>
+                Número de Utente de Saúde:
+                <input
+                  type="text"
+                  value={numeroUtente}
+                  onChange={handleNumeroUtenteChange}
+                  disabled={admissaoBalcao}
+                />
+              </label>
+            </div>
+            <div className="form-group">
+              <label>
+                <input
+                  type="checkbox"
+                  checked={admissaoBalcao}
+                  onChange={handleAdmissaoBalcaoChange}
+                />
+                Admissão ao Balcão (sem número de utente de saúde)
+              </label>
+            </div>
+            {admissaoBalcao && (
+              <div className="form-group">
+                <label>
+                  Prioridade:
+                  <select value={prioridade} onChange={handlePrioridadeChange}>
+                    <option value="normal">Normal</option>
+                    <option value="alta">Alta</option>
+                  </select>
+                </label>
+                {mostrarAviso && (
+                  <p style={{ color: 'red' }}>
+                    Pode ser solicitado documento comprovativo de incapacidade
+                  </p>
+                )}
+              </div>
             )}
-          </div>
-        )}
-        <button type="submit">Criar Senha</button>
-      </form>
-      <button className="voltar" onClick={() => navigate(-1)}>Voltar</button>
+            <button type="submit">Criar Senha</button>
+          </form>
+        </div>
+        <button className="voltar" onClick={() => navigate(-1)}>Voltar</button>
+      </main>
     </div>
   );
 }

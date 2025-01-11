@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './CriarConsultaPage.css'; // Certifique-se de que o arquivo CSS está sendo importado
 
-const CriarConsulta = () => {
+const CriarConsultaPage = () => {
   const [data, setData] = useState('');
   const [hora, setHora] = useState('');
   const [numeroUtenteSaude, setNumeroUtenteSaude] = useState('');
@@ -29,47 +30,52 @@ const CriarConsulta = () => {
   };
 
   return (
-    <div>
-      <h1>Criar Consulta</h1>
-      <form>
-        <div>
-          <label>Data:</label>
-          <input
-            type="date"
-            value={data}
-            onChange={(e) => setData(e.target.value)}
-          />
+    <div className="container">
+      <main>
+        <div className="card">
+          <h2>Criar Consulta</h2>
+          <form>
+            <div className="form-group">
+              <label>Data:</label>
+              <input
+                type="date"
+                value={data}
+                onChange={(e) => setData(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Hora:</label>
+              <input
+                type="time"
+                value={hora}
+                onChange={(e) => setHora(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label>Número Utente Saúde:</label>
+              <input
+                type="number"
+                value={numeroUtenteSaude}
+                onChange={(e) => setNumeroUtenteSaude(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label>ID Profissional:</label>
+              <input
+                type="number"
+                value={idProfissional}
+                onChange={(e) => setIdProfissional(e.target.value)}
+              />
+            </div>
+            <button type="button" onClick={handleCreateConsulta}>
+              Criar Consulta
+            </button>
+          </form>
         </div>
-        <div>
-          <label>Hora:</label>
-          <input
-            type="time"
-            value={hora}
-            onChange={(e) => setHora(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Número Utente Saúde:</label>
-          <input
-            type="number"
-            value={numeroUtenteSaude}
-            onChange={(e) => setNumeroUtenteSaude(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>ID Profissional:</label>
-          <input
-            type="number"
-            value={idProfissional}
-            onChange={(e) => setIdProfissional(e.target.value)}
-          />
-        </div>
-        <button type="button" onClick={handleCreateConsulta}>
-          Criar Consulta
-        </button>
-      </form>
+        <button className="voltar" onClick={() => navigate(-1)}>Voltar</button>
+      </main>
     </div>
   );
 };
 
-export default CriarConsulta;
+export default CriarConsultaPage;

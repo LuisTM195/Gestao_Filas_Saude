@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
-import logo from '../../assets/Logo_NO_BG.png'; // Certifique-se de que o caminho está correto
-import './ProfissionalPage.css'; // Certifique-se de que o arquivo CSS está sendo importado
+import logo from '../../assets/Logo_NO_BG.png';
+import './ProfissionalPage.css'; 
 
 const ProfissionalPage = () => {
   const [authUrl, setAuthUrl] = useState('');
@@ -13,7 +13,7 @@ const ProfissionalPage = () => {
   const [tokens, setTokens] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { name } = location.state || { name: 'Profissional' }; // Receba o nome do profissional
+  const { name } = location.state || { name: 'Profissional' }; 
 
   useEffect(() => {
     const fetchAuthUrl = async () => {
@@ -60,11 +60,11 @@ const ProfissionalPage = () => {
       <main>
         <div className="card">
           <h2>Bem-vindo, {name}!</h2>
-          <p>Aqui você pode gerir as suas consultas e pacientes.</p>
+          <p>Aqui pode gerir as consultas e utentes.</p>
         </div>
         <div className="button-container">
-          <button onClick={() => navigateTo('/criar-consulta')}>Criar Consulta</button>
-          <button onClick={() => navigateTo('/consultas')}>Visualizar Consultas</button>
+          <button onClick={() => navigateTo('/criar-consulta')}>Criar Consulta</button> {/* Botão para Criar consulta */}
+          <button onClick={() => navigateTo('/consultas')}>Visualizar Consultas</button> {/* Botão para Visualizar consulta */}
           <button onClick={() => navigateTo('/criar-utente')}>Criar Utente</button> {/* Botão para Criar Utente */}
           <button onClick={() => navigateTo('/apagar-consulta')}>Apagar Consulta</button> {/* Botão para Apagar Consulta */}
           {tokens ? (

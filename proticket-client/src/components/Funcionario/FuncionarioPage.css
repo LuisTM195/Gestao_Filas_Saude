@@ -63,9 +63,15 @@ body {
   margin-bottom: 15px;
 }
 
-.card p {
+.card ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.card li {
   font-size: 18px;
   color: #333;
+  margin: 5px 0;
 }
 
 /* Estilo dos botões */
@@ -90,8 +96,8 @@ button:hover {
 /* Botão de voltar */
 .voltar {
   position: fixed;
-  bottom: 80px; /* Ajuste a posição para ficar acima do rodapé */
-  right: 20px;
+  bottom: 20px; /* Ajuste a posição para ficar acima do rodapé */
+  right: 20px; /* Ajuste a posição para ficar mais à direita */
   padding: 12px 25px;
   background-color: #007bff;
   color: white;
@@ -135,6 +141,6 @@ button:hover {
 }
 
 .fila {
-  margin-bottom: 20px;
+  margin-bottom: 40px; /* Aumente a margem inferior para garantir espaço suficiente */
   text-align: center; /* Centralize o texto */
 }

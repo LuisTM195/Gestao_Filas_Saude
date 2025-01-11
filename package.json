@@ -3,6 +3,7 @@
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
     "googleapis": "^144.0.0",
+    "qrcode.react": "^4.2.0",
     "react-router-dom": "^6.28.0",
     "web-vitals": "^4.2.4"
   },

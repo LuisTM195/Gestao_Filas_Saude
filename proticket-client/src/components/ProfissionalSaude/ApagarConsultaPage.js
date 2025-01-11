@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import logo from '../../assets/Logo_NO_BG.png'; // Certifique-se de que o caminho está correto
+import './ApagarConsultaPage.css'; // Certifique-se de que o arquivo CSS está sendo importado
 
 const ApagarConsultaPage = () => {
   const [idConsulta, setIdConsulta] = useState('');
@@ -18,21 +20,27 @@ const ApagarConsultaPage = () => {
   };
 
   return (
-    <div>
-      <h1>Apagar Consulta</h1>
-      <form>
-        <div>
-          <label>ID Consulta:</label>
-          <input
-            type="number"
-            value={idConsulta}
-            onChange={(e) => setIdConsulta(e.target.value)}
-          />
+    <div className="container">
+      <img src={logo} alt="Logo" className="logo" />
+      <main>
+        <div className="card">
+          <h2>Apagar Consulta</h2>
+          <form>
+            <div className="form-group">
+              <label>ID Consulta:</label>
+              <input
+                type="number"
+                value={idConsulta}
+                onChange={(e) => setIdConsulta(e.target.value)}
+              />
+            </div>
+            <button type="button" onClick={handleDeleteConsulta}>
+              Apagar Consulta
+            </button>
+          </form>
         </div>
-        <button type="button" onClick={handleDeleteConsulta}>
-          Apagar Consulta
-        </button>
-      </form>
+        <button className="voltar" onClick={() => navigate(-1)}>Voltar</button>
+      </main>
     </div>
   );
 };

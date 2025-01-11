@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './CriarUtentePage.css'; // Certifique-se de que o arquivo CSS está sendo importado
 
 function CriarUtentePage() {
   const [numeroUtenteSaude, setNumeroUtenteSaude] = useState('');
@@ -34,89 +35,93 @@ function CriarUtentePage() {
   };
 
   return (
-    <div>
-      <h1>Criar Utente</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>
-            Número Utente Saúde:
-            <input
-              type="number"
-              value={numeroUtenteSaude}
-              onChange={(e) => setNumeroUtenteSaude(e.target.value)}
-              required
-            />
-          </label>
+    <div className="container">
+      <main>
+        <div className="card">
+          <h2>Criar Utente</h2>
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>
+                Número Utente Saúde:
+                <input
+                  type="number"
+                  value={numeroUtenteSaude}
+                  onChange={(e) => setNumeroUtenteSaude(e.target.value)}
+                  required
+                />
+              </label>
+            </div>
+            <div className="form-group">
+              <label>
+                Nome:
+                <input
+                  type="text"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  required
+                />
+              </label>
+            </div>
+            <div className="form-group">
+              <label>
+                Cartão Cidadão:
+                <input
+                  type="text"
+                  value={cartaoCidadao}
+                  onChange={(e) => setCartaoCidadao(e.target.value)}
+                  required
+                />
+              </label>
+            </div>
+            <div className="form-group">
+              <label>
+                Data de Nascimento:
+                <input
+                  type="date"
+                  value={dataNascimento}
+                  onChange={(e) => setDataNascimento(e.target.value)}
+                  required
+                />
+              </label>
+            </div>
+            <div className="form-group">
+              <label>
+                Telefone:
+                <input
+                  type="text"
+                  value={telefone}
+                  onChange={(e) => setTelefone(e.target.value)}
+                  required
+                />
+              </label>
+            </div>
+            <div className="form-group">
+              <label>
+                Email:
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </label>
+            </div>
+            <div className="form-group">
+              <label>
+                Palavra-passe:
+                <input
+                  type="password"
+                  value={palavraPass}
+                  onChange={(e) => setPalavraPass(e.target.value)}
+                  required
+                />
+              </label>
+            </div>
+            <button type="submit">Criar Utente</button>
+          </form>
         </div>
-        <div>
-          <label>
-            Nome:
-            <input
-              type="text"
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Cartão Cidadão:
-            <input
-              type="text"
-              value={cartaoCidadao}
-              onChange={(e) => setCartaoCidadao(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Data de Nascimento:
-            <input
-              type="date"
-              value={dataNascimento}
-              onChange={(e) => setDataNascimento(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Telefone:
-            <input
-              type="text"
-              value={telefone}
-              onChange={(e) => setTelefone(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Email:
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Palavra-passe:
-            <input
-              type="password"
-              value={palavraPass}
-              onChange={(e) => setPalavraPass(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <button type="submit">Criar Utente</button>
-      </form>
-      <button className="voltar" onClick={() => navigate(-1)}>Voltar</button>
+        <button className="voltar" onClick={() => navigate(-1)}>Voltar</button>
+      </main>
     </div>
   );
 }
