@@ -144,35 +144,40 @@ router.get('/senhas-em-curso', async (req, res) => {
 
 
 //-------------------UTENTES-------------------------
+// Expressões Regulares
+const nomeRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{2,}$/; //Apenas letras e espaços, com pelo menos 2 caracteres.
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; //Formato de email válido.
+const numeroUtenteSaudeRegex = /^\d{9}$/; //Apenas números, com 8 dígitos.
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; //Apenas letras, números e caracteres especiais, com pelo menos 8 caracteres, com pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial.
+const telefoneRegex = /^\d{9}$/; //Apenas números, com 9 dígitos.
+
 // Rota para criar um novo utente
-router.post('/utentes', async (req, res) => {
-  const { numeroUtenteSaude, nome, cartaoCidadao, dataNascimento, telefone, email, palavraPass } = req.body;
+router.post('/criar-utente', async (req, res) => {
+  const { nome, email, numeroUtenteSaude, password, telefone } = req.body;
+
+  // Validação dos dados
+  if (!nomeRegex.test(nome)) {
+    return res.status(400).send('Nome inválido.');
+  }
+  if (!emailRegex.test(email)) {
+    return res.status(400).send('Email inválido.');
+  }
+  if (!numeroUtenteSaudeRegex.test(numeroUtenteSaude)) {
+    return res.status(400).send('Número de Utente de Saúde inválido.');
+  }
+  if (!passwordRegex.test(password)) {
+    return res.status(400).send('Palavra-passe inválida.');
+  }
+  if (!telefoneRegex.test(telefone)) {
+    return res.status(400).send('Número de telefone inválido.');
+  }
 
   try {
-    console.log('Dados recebidos:', {
-      numeroUtenteSaude,
-      nome,
-      cartaoCidadao,
-      dataNascimento,
-      telefone,
-      email,
-      palavraPass
-    });
-
-    const query = `
-      INSERT INTO Utente (NumeroUtenteSaude, Nome, CartaoCidadao, DataNascimento, Telefone, Email, PalavraPass)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
-      RETURNING *
-    `;
-    const values = [numeroUtenteSaude, nome, cartaoCidadao, dataNascimento, telefone, email, palavraPass];
-
-    console.log('Executando consulta SQL:', query);
-    console.log('Com valores:', values);
-
-    const newUtente = await pool.query(query, values);
-
-    console.log('Utente criado:', newUtente.rows[0]);
-    res.status(201).json(newUtente.rows[0]);
+    const novoUtente = await pool.query(
+      'INSERT INTO Utente (Nome, Email, NumeroUtenteSaude, PalavraPass, Telefone) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [nome, email, numeroUtenteSaude, password, telefone]
+    );
+    res.json(novoUtente.rows[0]);
   } catch (err) {
     console.error('Erro ao criar utente:', err.message);
     res.status(500).send('Erro ao criar utente');
