@@ -2,7 +2,7 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './ImprimirSenhaPage.css'; // Certifique-se de que o arquivo CSS está sendo importado
 
-const ImprimirSenhaPage = () => {
+function ImprimirSenhaPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { senha } = location.state || {};
@@ -22,11 +22,12 @@ const ImprimirSenhaPage = () => {
           <p><strong>Data de Emissão:</strong> {senha.dataemissao}</p>
           <p><strong>Hora de Emissão:</strong> {senha.horaemissao}</p>
           <p><strong>Estado:</strong> {senha.estado}</p>
+          <p><strong>Número de Utente:</strong> {senha.numeroutentesaude}</p>
           <button onClick={() => navigate('/utente')}>Voltar</button>
         </div>
       </main>
     </div>
   );
-};
+}
 
 export default ImprimirSenhaPage;

@@ -1,4 +1,4 @@
-/* CriarSenhaPage.css */
+/* 1CriarSenhaPage.css */
 
 /* Estilos gerais para a página de criar senha */
 body {
@@ -55,46 +55,21 @@ body {
   margin-bottom: 15px;
 }
 
-.button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.button-group button {
-  background-color: #1e90ff; /* Azul claro */
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  margin: 10px;
-  cursor: pointer;
-  font-size: 16px;
-  border-radius: 8px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+.card button {
+  display: block;
   width: 100%;
-}
-
-.button-group button:hover {
-  background-color: #1c86ee; /* Azul mais escuro no hover */
-  transform: translateY(-3px);
-}
-
-/* Botão de voltar */
-.voltar {
-  position: fixed;
-  bottom: 80px; /* Ajuste a posição para ficar acima do rodapé */
-  right: 20px;
-  padding: 12px 25px;
-  background-color: #007bff;
+  margin: 10px 0;
+  padding: 15px;
+  font-size: 18px;
   color: white;
+  background-color: #1e90ff; /* Azul claro */
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 16px;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.voltar:hover {
-  background-color: #0056b3;
+.card button:hover {
+  background-color: #1c86ee; /* Azul mais escuro no hover */
   transform: translateY(-3px);
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './3CriarSenhaPage.css'; // Certifique-se de que o arquivo CSS está sendo importado
@@ -10,24 +10,31 @@ function CriarSenhaPage3() {
   const setor = queryParams.get('setor');
   const [numeroUtente, setNumeroUtente] = useState('');
 
+  useEffect(() => {
+    if (setor === 'Consulta Doença Aguda') {
+      handleSubmit();
+    }
+  }, [setor]);
+
   const handleInputChange = (event) => {
     setNumeroUtente(event.target.value);
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    if (event) event.preventDefault();
+    const prioridade = setor === 'Consulta Doença Aguda' ? 'alta' : 'normal';
     console.log('Dados enviados:', {
       numeroUtenteSaude: numeroUtente,
       admissaoBalcao: false,
       setor,
-      prioridade: 'normal',
+      prioridade,
     });
     try {
       const response = await axios.post('http://localhost:5000/api/senhas', {
         numeroUtenteSaude: numeroUtente,
         admissaoBalcao: false,
         setor,
-        prioridade: 'normal',
+        prioridade,
       });
       console.log('Resposta do servidor:', response.data);
       alert('Senha criada com sucesso!');

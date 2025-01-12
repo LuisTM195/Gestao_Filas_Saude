@@ -1,100 +1,94 @@
-/* CriarSenhaPage2.css */
+/* 2CriarSenhaPage.css */
 
 /* Estilos gerais para a página de criar senha */
 body {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-    background-color: #f0f8ff; /* Fundo azul claro */
-    color: #333;
-  }
-  
-  /* Container principal */
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 50px;
-    min-height: calc(100vh - 120px); /* Ajuste a altura para evitar sobreposição com o header */
-    background: rgba(255, 255, 255, 0.7); /* Fundo semitransparente */
-    border-radius: 15px;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px); /* Efeito de vidro fosco */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-top: 120px; /* Adicione margem superior para evitar sobreposição com o header */
-    width: 90%; /* Aumente a largura do container */
-    max-width: 800px; /* Defina uma largura máxima */
-  }
-  
-  /* Efeito de hover para o container */
-  .container:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-  }
-  
-  /* Estilo do card */
-  .card {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 15px;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: center; /* Centralize o texto */
-    width: 100%; /* Aumente a largura do card */
-  }
-  
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-  }
-  
-  .card h2 {
-    color: #1e90ff;
-    font-size: 28px;
-    margin-bottom: 15px;
-  }
-  
-  .button-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .button-group button {
-    background-color: #1e90ff; /* Azul claro */
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    margin: 10px;
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 8px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    width: 100%;
-  }
-  
-  .button-group button:hover {
-    background-color: #1c86ee; /* Azul mais escuro no hover */
-    transform: translateY(-3px);
-  }
-  
-  /* Botão de voltar */
-  .voltar {
-    position: fixed;
-    bottom: 80px; /* Ajuste a posição para ficar acima do rodapé */
-    right: 20px;
-    padding: 12px 25px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .voltar:hover {
-    background-color: #0056b3;
-    transform: translateY(-3px);
-  }
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f0f8ff; /* Fundo azul claro */
+  color: #333;
+}
+
+/* Container principal */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  min-height: calc(100vh - 120px); /* Ajuste a altura para evitar sobreposição com o header */
+  background: rgba(255, 255, 255, 0.7); /* Fundo semitransparente */
+  border-radius: 15px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px); /* Efeito de vidro fosco */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 120px; /* Adicione margem superior para evitar sobreposição com o header */
+  width: 90%; /* Aumente a largura do container */
+  max-width: 800px; /* Defina uma largura máxima */
+}
+
+/* Efeito de hover para o container */
+.container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo do card */
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center; /* Centralize o texto */
+  width: 100%; /* Aumente a largura do card */
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.card h2 {
+  color: #1e90ff;
+  font-size: 28px;
+  margin-bottom: 15px;
+}
+
+.card button {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 15px;
+  font-size: 18px;
+  color: white;
+  background-color: #1e90ff; /* Azul claro */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.card button:hover {
+  background-color: #1c86ee; /* Azul mais escuro no hover */
+  transform: translateY(-3px);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}

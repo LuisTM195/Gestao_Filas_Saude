@@ -12,7 +12,12 @@ function FuncionarioPage() {
     const fetchSenhas = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/ultimas-senhas-pendentes');
-        setSenhas(response.data);
+        console.log('Resposta da API:', response.data); // Adicione este log para verificar a resposta da API
+        if (Array.isArray(response.data)) {
+          setSenhas(response.data);
+        } else {
+          console.error('A resposta da API não é um array:', response.data);
+        }
       } catch (error) {
         console.error('Erro ao buscar senhas:', error);
       }

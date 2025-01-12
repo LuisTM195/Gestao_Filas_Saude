@@ -8,10 +8,9 @@ const { listEvents } = require('./googleCalendar');
 const { getAuthUrl } = require('./googleAuth'); // Certifique-se de que o caminho está correto
 
 //-------------SENHAS-------------------
-// Caminho para o arquivo que armazena o último número de senha
+// Funções auxiliares para gerar senhas
 const ultimoNumeroSenhaPath = path.join(__dirname, 'ultimoNumeroSenha.json');
 
-// Função para ler o último número de senha do arquivo
 function lerUltimoNumeroSenha() {
   if (!fs.existsSync(ultimoNumeroSenhaPath)) {
     escreverUltimoNumeroSenha(0);
@@ -21,13 +20,11 @@ function lerUltimoNumeroSenha() {
   return json.ultimoNumero;
 }
 
-// Função para escrever o último número de senha no arquivo
 function escreverUltimoNumeroSenha(numero) {
   const json = { ultimoNumero: numero };
   fs.writeFileSync(ultimoNumeroSenhaPath, JSON.stringify(json), 'utf8');
 }
 
-// Função para gerar um número de senha com prefixo
 function gerarNumeroSenha(setor) {
   const ultimoNumero = lerUltimoNumeroSenha();
   const novoNumero = ultimoNumero + 1;
@@ -59,7 +56,6 @@ function gerarNumeroSenha(setor) {
   return numeroSenha;
 }
 
-// Função para determinar a prioridade com base na opção selecionada
 function determinarPrioridade(admissaoBalcao) {
   return admissaoBalcao ? 'alta' : 'normal';
 }
@@ -109,6 +105,37 @@ router.post('/senhas', async (req, res) => {
     res.status(500).send('Erro ao criar senha');
   }
 });
+
+// Rota para obter as últimas 5 senhas pendentes
+router.get('/ultimas-senhas-pendentes', async (req, res) => {
+  try {
+    const ultimasSenhasPendentes = await pool.query(`
+      SELECT * FROM public.Senha
+      WHERE Estado = 'pendente'
+      ORDER BY DataEmissao DESC, HoraEmissao DESC
+      LIMIT 5
+    `);
+    res.json(ultimasSenhasPendentes.rows);
+  } catch (err) {
+    console.error('Erro ao buscar últimas senhas pendentes:', err.message);
+    res.status(500).send('Erro ao buscar últimas senhas pendentes');
+  }
+});
+
+// Rota para obter senhas em curso
+router.get('/senhas-em-curso', async (req, res) => {
+  try {
+    const senhasEmCurso = await pool.query(
+      'SELECT * FROM public.Senha WHERE Estado = $1 ORDER BY DataEmissao DESC, HoraEmissao DESC',
+      ['em curso']
+    );
+    res.json(senhasEmCurso.rows);
+  } catch (err) {
+    console.error('Erro ao buscar senhas em curso:', err.message);
+    res.status(500).send('Erro ao buscar senhas em curso');
+  }
+});
+
 
 
 

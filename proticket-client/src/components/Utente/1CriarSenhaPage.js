@@ -1,12 +1,30 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './1CriarSenhaPage.css'; // Certifique-se de que o arquivo CSS está sendo importado
 
 function CriarSenhaPage() {
   const navigate = useNavigate();
 
-  const handleButtonClick = (setor) => {
-    navigate(`/2CriarSenhaPage?setor=${setor}`);
+  const handleSetorClick = async (setor) => {
+    if (setor === 'Consulta Doença Aguda') {
+      try {
+        const response = await axios.post('http://localhost:5000/api/senhas', {
+          numeroUtenteSaude: null,
+          admissaoBalcao: true,
+          setor,
+          prioridade: 'alta',
+        });
+        console.log('Resposta do servidor:', response.data);
+        alert('Senha criada com sucesso!');
+        navigate('/imprimir-senha', { state: { senha: response.data } });
+      } catch (error) {
+        console.error('Erro ao criar senha:', error);
+        alert('Erro ao criar senha. Tente novamente.');
+      }
+    } else {
+      navigate(`/2CriarSenhaPage?setor=${setor}`);
+    }
   };
 
   return (
@@ -14,15 +32,12 @@ function CriarSenhaPage() {
       <main>
         <div className="card">
           <h2>Escolha o Setor</h2>
-          <div className="button-group">
-            <button onClick={() => handleButtonClick('Admissão')}>Admissão</button>
-            <button onClick={() => handleButtonClick('Consulta Doença Aguda')}>Consulta Doença Aguda</button>
-            <button onClick={() => handleButtonClick('Marcação')}>Marcação</button>
-            <button onClick={() => handleButtonClick('Renovação de Medicação Habitual')}>Renovação de Medicação Habitual</button>
-            <button onClick={() => handleButtonClick('Outros Assuntos')}>Outros Assuntos</button>
-          </div>
+          <button onClick={() => handleSetorClick('Admissão')}>Admissão</button>
+          <button onClick={() => handleSetorClick('Consulta Doença Aguda')}>Consulta Doença Aguda</button>
+          <button onClick={() => handleSetorClick('Marcação')}>Marcação</button>
+          <button onClick={() => handleSetorClick('Renovação de Medicação Habitual')}>Renovação de Medicação Habitual</button>
+          <button onClick={() => handleSetorClick('Outros Assuntos')}>Outros Assuntos</button>
         </div>
-        <button className="voltar" onClick={() => navigate(-1)}>Voltar</button>
       </main>
     </div>
   );
