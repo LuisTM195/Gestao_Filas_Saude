@@ -4,7 +4,11 @@ import HomePage from './components/HomePage';
 import UtentePage from './components/Utente/UtentePage';
 import ProfissionalPage from './components/ProfissionalSaude/ProfissionalPage';
 import FuncionarioPage from './components/Funcionario/FuncionarioPage';
-import CriarSenhaPage from './components/Utente/CriarSenhaPage';
+import CriarSenhaPage from './components/Utente/1CriarSenhaPage';
+import CriarSenhaPage2 from './components/Utente/2CriarSenhaPage';
+import CriarSenhaPage3 from './components/Utente/3CriarSenhaPage';
+import CriarSenhaPage4 from './components/Utente/4CriarSenhaPage';
+import ImprimirSenhaPage from './components/Utente/ImprimirSenhaPage'; // Importe o componente ImprimirSenhaPage
 import ConsultasPage from './components/Utente/ConsultasPage';
 import AcompanhamentoPage from './components/Funcionario/AcompanhamentoPage';
 import CriarConsultaPage from './components/ProfissionalSaude/CriarConsultaPage';
@@ -25,13 +29,17 @@ const App = () => {
             <Route path="/utente" element={<UtentePage />} />
             <Route path="/profissional" element={<ProfissionalPage />} />
             <Route path="/funcionario" element={<FuncionarioPage />} />
-            <Route path="/criar-senha" element={<CriarSenhaPage />} />
+            <Route path="/1CriarSenhaPage" element={<CriarSenhaPage />} />
+            <Route path="/2CriarSenhaPage" element={<CriarSenhaPage2 />} />
+            <Route path="/3CriarSenhaPage" element={<CriarSenhaPage3 />} />
+            <Route path="/4CriarSenhaPage" element={<CriarSenhaPage4 />} />
+            <Route path="/imprimir-senha" element={<ImprimirSenhaPage />} /> {/* Adicione a rota para ImprimirSenhaPage */}
             <Route path="/consultas" element={<ConsultasPage />} />
             <Route path="/acompanhamento" element={<AcompanhamentoPage />} />
             <Route path="/criar-consulta" element={<CriarConsultaPage />} />
-            <Route path="/apagar-consulta" element={<ApagarConsultaPage />} /> {/* Adicione a rota para ApagarConsultaPage */}
+            <Route path="/apagar-consulta" element={<ApagarConsultaPage />} />
             <Route path="/editar-consulta" element={<EditarConsultaPage />} />
-            <Route path="/criar-utente" element={<CriarUtentePage />} /> {/* Adicione a rota para CriarUtentePage */}
+            <Route path="/criar-utente" element={<CriarUtentePage />} />
           </Routes>
         </Router>
       </main>

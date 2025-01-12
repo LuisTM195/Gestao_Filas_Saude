@@ -26,7 +26,7 @@ const UtentePage = () => {
         </div>
         <div className="button-container">
           <button onClick={() => navigateTo('/consultas')}>Visualizar Consultas</button>
-          <button onClick={() => navigateTo('/criar-senha')}>Criar Senha</button>
+          <button onClick={() => navigateTo('/1CriarSenhaPage')}>Criar Senha</button> {/* Atualize a rota para 1CriarSenhaPage */}
           <button className="voltar" onClick={() => navigate(-1)}>Voltar</button>
         </div>
         <div className="qr-code">
