@@ -147,7 +147,7 @@ router.get('/senhas-em-curso', async (req, res) => {
 // Expressões Regulares
 const nomeRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ\s]{2,}$/; //Apenas letras e espaços, com pelo menos 2 caracteres.
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; //Formato de email válido.
-const numeroUtenteSaudeRegex = /^\d{9}$/; //Apenas números, com 8 dígitos.
+const numeroUtenteSaudeRegex = /^\d{9}$/; //Apenas números, com 9 dígitos.
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; //Apenas letras, números e caracteres especiais, com pelo menos 8 caracteres, com pelo menos uma letra minúscula, uma letra maiúscula, um número e um caractere especial.
 const telefoneRegex = /^\d{9}$/; //Apenas números, com 9 dígitos.
 
