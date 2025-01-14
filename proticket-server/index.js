@@ -3,14 +3,14 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const app = express();
-const routes = require('./routes'); // Importe o arquivo de rotas
+const routes = require('./routes'); // Certifique-se de que o caminho está correto
 
 // Middleware
 app.use(cors());
 app.use(express.json()); // req.body
 
 // Rotas da API
-app.use('/api', routes); // Use as rotas definidas no arquivo routes.js
+app.use('/api', routes);
 
 // Servir os arquivos estáticos do React
 app.use(express.static(path.join(__dirname, '../proticket-client/build')));

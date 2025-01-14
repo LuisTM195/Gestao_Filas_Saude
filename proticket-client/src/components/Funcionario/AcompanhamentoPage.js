@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import logo from '../../assets/Logo_NO_BG.png'; // Certifique-se de que o caminho está correto
-import publicidade from '../../assets/publicidade.jpg'; // Certifique-se de que o caminho está correto
-import './AcompanhamentoPage.css'; // Certifique-se de que o arquivo CSS está sendo importado
+import logo from '../../assets/Logo_NO_BG.png';
+import publicidade from '../../assets/publicidade.jpg';
+import './AcompanhamentoPage.css';
 
 const AcompanhamentoPage = () => {
   const [senhasEmCurso, setSenhasEmCurso] = useState([]);
@@ -13,7 +13,12 @@ const AcompanhamentoPage = () => {
     const fetchSenhas = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/senhas-em-curso');
-        setSenhasEmCurso(response.data);
+        console.log('Resposta da API:', response.data); // Adicione este log para verificar a resposta da API
+        if (Array.isArray(response.data)) {
+          setSenhasEmCurso(response.data);
+        } else {
+          console.error('A resposta da API não é um array:', response.data);
+        }
       } catch (error) {
         console.error('Erro ao buscar senhas:', error);
       }
