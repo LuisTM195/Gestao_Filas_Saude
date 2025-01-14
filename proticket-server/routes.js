@@ -136,6 +136,72 @@ router.get('/senhas-em-curso', async (req, res) => {
   }
 });
 
+// Rota para avançar uma senha e atribuir uma fila
+router.put('/senhas/avancar/:idFila', async (req, res) => {
+  const { idFila } = req.params; // A fila é definida pelo parâmetro fornecido na URL
+  try {
+    // Atualizar a senha "em curso" para "expirada" na fila especificada
+    await pool.query(
+      'UPDATE public.Senha SET Estado = $1 WHERE Estado = $2 AND Fila = $3',
+      ['expirada', 'em curso', idFila]
+    );
+
+    // Selecionar a próxima senha pendente (sem fila associada)
+    const senhaPendente = await pool.query(
+      'SELECT * FROM public.Senha WHERE Estado = $1 AND Fila IS NULL ORDER BY DataEmissao, HoraEmissao LIMIT 1',
+      ['pendente']
+    );
+
+    if (senhaPendente.rows.length === 0) {
+      return res.status(404).send('Nenhuma senha pendente encontrada para atribuir a fila.');
+    }
+
+    const senhaId = senhaPendente.rows[0].idsenha;
+
+    // Atualizar a próxima senha pendente para "em curso" e atribuir a fila
+    const senhaAvancada = await pool.query(
+      'UPDATE public.Senha SET Estado = $1, Fila = $2 WHERE IdSenha = $3 RETURNING *',
+      ['em curso', idFila, senhaId]
+    );
+
+    res.json(senhaAvancada.rows[0]); // Retorna os dados da senha que foi avançada
+  } catch (err) {
+    console.error('Erro ao avançar senha:', err.message);
+    res.status(500).send('Erro ao avançar senha.');
+  }
+});
+
+// Rota para obter as últimas 5 senhas pendentes de cada fila
+router.get('/ultimas-senhas-pendentes', async (req, res) => {
+  try {
+    const ultimasSenhasPendentes = await pool.query(`
+      SELECT * FROM (
+        SELECT *, ROW_NUMBER() OVER (PARTITION BY Fila ORDER BY DataEmissao DESC, HoraEmissao DESC) AS rn
+        FROM public.Senha
+        WHERE Estado = 'pendente'
+      ) sub
+      WHERE rn <= 5
+    `);
+    res.json(ultimasSenhasPendentes.rows);
+  } catch (err) {
+    console.error('Erro ao buscar últimas senhas pendentes:', err.message);
+    res.status(500).send('Erro ao buscar últimas senhas pendentes');
+  }
+});
+
+// Rota para obter senhas em curso
+router.get('/senhas-em-curso', async (req, res) => {
+  try {
+    const senhasEmCurso = await pool.query(
+      'SELECT * FROM public.Senha WHERE Estado = $1 ORDER BY DataEmissao DESC, HoraEmissao DESC',
+      ['em curso']
+    );
+    res.json(senhasEmCurso.rows);
+  } catch (err) {
+    console.error('Erro ao buscar senhas em curso:', err.message);
+    res.status(500).send('Erro ao buscar senhas em curso');
+  }
+});
 
 
 

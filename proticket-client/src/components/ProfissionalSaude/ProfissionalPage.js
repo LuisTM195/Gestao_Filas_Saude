@@ -50,8 +50,8 @@ const ProfissionalPage = () => {
     }
   };
 
-  const navigateTo = (path) => {
-    navigate(path);
+  const navigateTo = (path, state = {}) => {
+    navigate(path, { state });
   };
 
   return (
@@ -67,6 +67,7 @@ const ProfissionalPage = () => {
           <button onClick={() => navigateTo('/consultas')}>Visualizar Consultas</button> {/* Botão para Visualizar consulta */}
           <button onClick={() => navigateTo('/criar-utente')}>Criar Utente</button> {/* Botão para Criar Utente */}
           <button onClick={() => navigateTo('/apagar-consulta')}>Apagar Consulta</button> {/* Botão para Apagar Consulta */}
+          <button onClick={() => navigateTo('/editar-consulta')}>Editar Consulta</button>  {/* Botão para Editar Consulta */}
           {tokens ? (
             <div className="calendar-form">
               <h3>Marcar Consulta no Google Calendar</h3>

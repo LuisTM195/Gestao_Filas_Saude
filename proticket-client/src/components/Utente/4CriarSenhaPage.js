@@ -61,9 +61,13 @@ function CriarSenhaPage4() {
                   </select>
                 </label>
                 {mostrarAviso && (
-                  <p style={{ color: 'red' }}>
-                    Pode ser solicitado documento comprovativo de incapacidade
-                  </p>
+                  <div>
+                  <p style={{ color: 'red' }}>A prioridade no atendimento ao balcão destina-se a pessoas com incapacidade igual ou superior a 60%;</p>
+                  <p style={{ color: 'red' }}>Grávidas;</p>
+                  <p style={{ color: 'red' }}>Acompanhantes de crianças até dois anos;</p>
+                  <p style={{ color: 'red' }}>Pessoas com mais de 65 anos e limitações evidentes;</p>
+                  <p style={{ color: 'red' }}>Poderá ser necessária a apresentação de comprovativos de prioridade, sob pena de ter que retirar nova senha e aguardar a nova chamada.</p>
+                </div>
                 )}
               </div>
             )}
