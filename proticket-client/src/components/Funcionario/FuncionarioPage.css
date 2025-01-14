@@ -28,17 +28,6 @@ body {
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilo do logo */
-.logo {
-  height: 80px;
-  margin-bottom: 20px;
-  position: fixed;
-  top: 20px; /* Ajuste a posição para ficar mais abaixo */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000; /* Certifique-se de que o logo está acima de outros elementos */
-}
-
 /* Estilo do card */
 .card {
   background: rgba(255, 255, 255, 0.9);

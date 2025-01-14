@@ -15,6 +15,8 @@ import CriarConsultaPage from './components/ProfissionalSaude/CriarConsultaPage'
 import ApagarConsultaPage from './components/ProfissionalSaude/ApagarConsultaPage';
 import EditarConsultaPage from './components/ProfissionalSaude/EditarConsultaPage';
 import CriarUtentePage from './components/Utente/CriarUtentePage';
+import PrescricaoPage from './components/ProfissionalSaude/PrescricaoPage'; // Adicione esta linha
+import CriarPrescricaoPage from './components/ProfissionalSaude/CriarPrescricaoPage'; // Adicione esta linha
 import snsLogo from './assets/Símbolo_do_SNS.png'; // Certifique-se de que o caminho está correto
 import './App.css'; // Certifique-se de que o caminho está correto
 
@@ -40,6 +42,8 @@ const App = () => {
             <Route path="/apagar-consulta" element={<ApagarConsultaPage />} />
             <Route path="/editar-consulta" element={<EditarConsultaPage />} />
             <Route path="/criar-utente" element={<CriarUtentePage />} />
+            <Route path="/prescricao" element={<PrescricaoPage />} /> {/* Adicione esta linha */}
+            <Route path="/criar-prescricao" element={<CriarPrescricaoPage />} /> {/* Adicione esta linha */}
           </Routes>
         </Router>
       </main>

@@ -7,7 +7,7 @@ import './UtentePage.css'; // Certifique-se de que o arquivo CSS está sendo imp
 const UtentePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { name } = location.state || { name: 'Utente' }; // Receba o nome do utente
+  const { name } = location.state || { name: 'Utente' }; // Recebe o nome do utente
 
   const navigateTo = (path) => {
     navigate(path);

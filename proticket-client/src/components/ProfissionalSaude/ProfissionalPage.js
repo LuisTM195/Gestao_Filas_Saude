@@ -65,10 +65,11 @@ const ProfissionalPage = () => {
         <div className="button-container">
           <button onClick={() => navigateTo('/criar-consulta')}>Criar Consulta</button> {/* Botão para Criar consulta */}
           <button onClick={() => navigateTo('/consultas')}>Visualizar Consultas</button> {/* Botão para Visualizar consulta */}
-          <button onClick={() => navigateTo('/criar-utente')}>Criar Utente</button> {/* Botão para Criar Utente */}
           <button onClick={() => navigateTo('/apagar-consulta')}>Apagar Consulta</button> {/* Botão para Apagar Consulta */}
           <button onClick={() => navigateTo('/editar-consulta')}>Editar Consulta</button>  {/* Botão para Editar Consulta */}
-          {tokens ? (
+          <button onClick={() => navigateTo('/prescricao')}>Visualizar Prescrição</button> {/* Botão para Visualizar Prescrição */}
+          <button onClick={() => navigateTo('/criar-prescricao')}>Criar Prescrição</button> {/* Botão para Criar Prescrição */}
+          {tokens && (
             <div className="calendar-form">
               <h3>Marcar Consulta no Google Calendar</h3>
               <input
@@ -97,8 +98,6 @@ const ProfissionalPage = () => {
               />
               <button onClick={handleCreateEvent}>Marcar Consulta no Google Calendar</button>
             </div>
-          ) : (
-            <button onClick={() => window.location.href = authUrl}>Autenticar com Google</button>
           )}
           <button className="voltar" onClick={() => navigate(-1)}>Voltar</button>
         </div>

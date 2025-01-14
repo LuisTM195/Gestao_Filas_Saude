@@ -1,5 +1,3 @@
-/* AcompanhamentoPage.css */
-
 /* Estilos gerais para a página de acompanhamento */
 body {
   margin: 0;
@@ -49,6 +47,7 @@ body {
   justify-content: center;
   width: 60%; /* Ajuste a largura conforme necessário */
   margin-right: 20px; /* Adicione margem direita para espaço da publicidade */
+  margin-left: 20px; /* Adicione margem esquerda para puxar o card mais para a esquerda */
 }
 
 /* Estilo do card */

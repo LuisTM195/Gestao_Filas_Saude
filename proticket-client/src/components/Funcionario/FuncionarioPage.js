@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import logo from '../../assets/Logo_NO_BG.png';
 import './FuncionarioPage.css'; // Certifique-se de que o arquivo CSS está sendo importado
 
 function FuncionarioPage() {
@@ -39,7 +38,6 @@ function FuncionarioPage() {
 
   return (
     <div className="container">
-      <img src={logo} alt="Logo" className="logo" />
       <main>
         <div className="sidebar">
           <button onClick={() => navigate('/criar-consulta')}>Criar Consulta</button>
