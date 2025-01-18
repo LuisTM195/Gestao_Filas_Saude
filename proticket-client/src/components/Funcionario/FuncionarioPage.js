@@ -29,7 +29,7 @@ function FuncionarioPage() {
       const response = await axios.put(`http://localhost:5000/api/senhas/avancar/${fila}`);
       alert('Senha avançada com sucesso!');
       setSenhas(senhas.filter(senha => senha.idsenha !== response.data.idsenha));
-      navigate('/acompanhamento'); // Redirecione para a página de acompanhamento
+      
     } catch (error) {
       console.error('Erro ao avançar senha:', error);
       alert('Erro ao avançar senha. Tente novamente.');

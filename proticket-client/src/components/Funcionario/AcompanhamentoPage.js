@@ -41,7 +41,7 @@ const AcompanhamentoPage = () => {
                 <ul>
                   {senhasEmCurso.filter(senha => senha.fila === 1).map(senha => (
                     <li key={senha.idsenha}>
-                      Senha: {senha.numerosenha} - Setor: {senha.setor} - Estado: {senha.estado}
+                      Senha: {senha.numerosenha} - Estado: {senha.estado}
                     </li>
                   ))}
                 </ul>
@@ -55,7 +55,7 @@ const AcompanhamentoPage = () => {
                 <ul>
                   {senhasEmCurso.filter(senha => senha.fila === 2).map(senha => (
                     <li key={senha.idsenha}>
-                      Senha: {senha.numerosenha} - Setor: {senha.setor} - Estado: {senha.estado}
+                      Senha: {senha.numerosenha} - Estado: {senha.estado}
                     </li>
                   ))}
                 </ul>
@@ -69,7 +69,7 @@ const AcompanhamentoPage = () => {
                 <ul>
                   {senhasEmCurso.filter(senha => senha.fila === 3).map(senha => (
                     <li key={senha.idsenha}>
-                      Senha: {senha.numerosenha} - Setor: {senha.setor} - Estado: {senha.estado}
+                      Senha: {senha.numerosenha} - Estado: {senha.estado}
                     </li>
                   ))}
                 </ul>

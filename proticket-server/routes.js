@@ -111,28 +111,28 @@ router.post('/senhas', async (req, res) => {
 router.put('/senhas/avancar/:fila', async (req, res) => {
   const { fila } = req.params;
   try {
-    // Atualizar a senha "em curso" para "expirada"
+    // Atualizar a senha "em curso" da fila específica para "expirada"
     await pool.query(
-      'UPDATE public.Senha SET Estado = $1 WHERE Estado = $2',
-      ['expirada', 'em curso']
+      'UPDATE public.Senha SET Estado = $1 WHERE Estado = $2 AND Fila = $3',
+      ['expirada', 'em curso', fila]
     );
 
-    // Selecionar a próxima senha pendente
+    // Selecionar a próxima senha pendente da mesma fila
     const senhaPendente = await pool.query(
-      'SELECT * FROM public.Senha WHERE Estado = $1 ORDER BY DataEmissao, HoraEmissao LIMIT 1',
-      ['pendente']
+      'SELECT * FROM public.Senha WHERE Estado = $1 AND Fila = $2 ORDER BY DataEmissao, HoraEmissao LIMIT 1',
+      ['pendente', fila]
     );
 
     if (senhaPendente.rows.length === 0) {
-      return res.status(404).send('Nenhuma senha pendente encontrada');
+      return res.status(404).send('Nenhuma senha pendente encontrada para esta fila');
     }
 
     const senhaId = senhaPendente.rows[0].idsenha;
 
-    // Atualizar a próxima senha pendente para "em curso" e associar à fila
+    // Atualizar a próxima senha pendente para "em curso"
     const senhaAvancada = await pool.query(
-      'UPDATE public.Senha SET Estado = $1, Fila = $2 WHERE IdSenha = $3 RETURNING *',
-      ['em curso', fila, senhaId]
+      'UPDATE public.Senha SET Estado = $1 WHERE IdSenha = $2 RETURNING *',
+      ['em curso', senhaId]
     );
 
     res.json(senhaAvancada.rows[0]);
@@ -173,6 +173,41 @@ router.get('/senhas-em-curso', async (req, res) => {
 });
 
 
+
+
+//-------------------PRESCRIÇÕES-------------------------
+// Rota para obter prescrições de um utente através do NumeroUtenteSaude
+router.get('/prescricoes/:numeroUtenteSaude', async (req, res) => {
+  const { numeroUtenteSaude } = req.params;
+  try {
+    const prescricoes = await pool.query(
+      'SELECT * FROM public.Prescricao WHERE NumeroUtenteSaude = $1',
+      [numeroUtenteSaude]
+    );
+    if (prescricoes.rows.length === 0) {
+      return res.status(404).send('Nenhuma prescrição encontrada para este utente.');
+    }
+    res.json(prescricoes.rows);
+  } catch (err) {
+    console.error('Erro ao buscar prescrições:', err.message);
+    res.status(500).send('Erro ao buscar prescrições');
+  }
+});
+
+// Rota para criar uma nova prescrição
+router.post('/prescricoes', async (req, res) => {
+  const { nome, descricao, dataValidade, dosagem, numeroUtenteSaude } = req.body;
+  try {
+    const novaPrescricao = await pool.query(
+      'INSERT INTO public.Prescricao (Nome, Descricao, DataValidade, Dosagem, NumeroUtenteSaude) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+      [nome, descricao, dataValidade, dosagem, numeroUtenteSaude]
+    );
+    res.json(novaPrescricao.rows[0]);
+  } catch (err) {
+    console.error('Erro ao criar prescrição:', err.message);
+    res.status(500).send('Erro ao criar prescrição');
+  }
+});
 
 
 
